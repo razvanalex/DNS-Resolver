@@ -1,0 +1,147 @@
+-------------------------------------------------------------------------------
+                               Tema 3 - PC
+-------------------------------------------------------------------------------
+
+AUTOR: Smadu Razvan-Alexandru  325CB
+
+FISIERE INCLUSE:
+  - main.c
+  - dns.h
+  - dns_preview.log
+  - dns_servers.conf
+  - Makefile
+  - README
+
+README
+  Implementarea temei
+    Functii folosite:
+      void error(char *msg):
+        Afiseaza la stderr un mesaj de eroare si se iese din program cu codul 1.
+      
+      int isByte(short n):
+        Determina daa un numar se incadreaza in 0-255 (este un byte).
+      
+      int checkIP(char *ip):
+        Determina daca un string respecta structura unuei adrese IPv4 (de forma
+        XXX.XXX.XXX.XXX, unde fiecare octet este de la 0 la 255).
+      
+      int checkArgs(int argc, char **argv, TDNSQuery *dnsQuery):
+        Verifica daca se respecta restrictiile legate de argumentele date ca 
+        parametru programului si intoarce prin efect lateral o structura 
+        TDNSQuery ce contine datele interogarii DNS si tipul adresei (Nume/IP).
+      
+      int connectToServer(char *dnsServerIp):
+        Se conecteaza la un server la adresa IP data ca parametru acestei 
+        functii. De asemenea seteaza timeout de 5 secunde pentru receive si 
+        connect.
+      
+      int convDNtoLabels(char *domain, char **result):
+        Converteste un string in formatul numar-caractere intr-un string care 
+        poate fi citit, in care se ignora primul caracter (primul numar) si 
+        se inlocuiesc celelalte numere cu '.'.
+      
+      void convertToARPA(char *buf, char **res):
+        Converteste o adresa IPv4 (a.b.c.d) intr-o adresa la care se pune 
+        prefixul "in-addr.arpa" (=> d.c.b.a.in-addr.arpa). Acesta este folosit 
+        pentru interogari de tipul PTR.
+
+      void printMsg(FILE *file, char *buffer):
+        Printeaza payload-ul trimis catre server, in format hexazecimal, pe 
+        o singura linie, in fisierul dat ca parametru. Fiind folosit protocolul
+        TCP la nivel de transport, se va afisa la inceput si dimensiunea 
+        mesajului.
+
+      int createMsg(TDNSQuery *dnsQuery, char **payload, unsigned short *size):
+        Creeaza un mesaj care sa poate fi trimis si interpretat de un server 
+        DNS. Mesajul contine un header si zona de question, completate 
+        corespunzator. Mesajul este returnat prin efect lateral, impreuna cu 
+        dimensiunea acestuia.
+      
+      int decompressName(char *buf, unsigned short startIndex1,
+                         char *result, unsigned short startIndex2, 
+                         unsigned short *actualIndex, unsigned char maxLen):
+        Se decomprima o sectiune dintr-un mesaj primit de la server. Se dau 
+        ca parametrii buffer-ul, indexul de inceput al zonei, rezultatul unde
+        trebuie scris impreuna cu indexul de inceput, dimensiunea maxima cat sa 
+        se decomprime si o zona de memorie in care se returneaza urmatorul index
+        pentru buffer, dupa decompresie. Functia returneaza urmatorul index 
+        pentru result, dupa decompresie.
+
+        Decompresia consta in parcurgerea zonei de memorie, si daca se 
+        intalneste o secventa 11... de 2 octeti (se verifica cu AND cu 0xC0 daca
+        da 0xC0, adica daca primii 2 bits sunt 11) se muta indexul la zona 
+        indicata de pointer si continuarea citirii pana la '\0' (toate numele 
+        se termina cu '\0', sau au o dimensiune stabilita de maxLen; in primul
+        caz este luat maxLen = 200, fiind suficient de mare pentru majoritatea
+        interogarilor care sunt compatibile cu cele transmise prin UDP).
+
+      void toPrintableName(char *buf, char *res):
+        Converteste un string cu cifre in hexazecimal, intr-un text 
+        human-readable. (se inlocuieste caracterul mai mic decat '0' si intre
+        '9'-'a' cu caracterul '.')
+      
+      void printText(char *buf, char *res):
+        Functie asemanatoare cu toPrintableName(), dar care nu printeaza 
+        caracterele mai mici decat ' ' (32). 
+      
+      void convBytesToIPv4(unsigned char *buf, char *res):
+        Converteste niste bytes in string, in formatul unui IPV4.
+      
+      void convBytesToIPv6(unsigned char *buf, char *res) :
+        Converteste niste bytes in string, in formatul unui IPV6.
+
+      void printRR(FILE *logFile, dns_rr_t *rr):
+        Printeaza in fisier datele din RR, sub formatul precizat in cerinta.
+        Pentru raspunsuri de forma AAAA, nu se garanteaza corectitudinea 
+        datelor, ci s-a implementat pentru a evita Stack Smashing Detected sau 
+        Segmentation Fault in cazul in care se primea un astfel de raspuns.
+
+      void readSection(FILE *logFile, unsigned short ancount, char *buf, 
+			                 unsigned short *startSeq, char *result, 
+			                 unsigned short *crtSize):
+        Citeste datele din zonele Answer/Authority/Additional, in formatul
+        specificat in http://www.zytrax.com/books/dns/ch15/.
+
+      int getData(FILE *logFile, char *buf, char *dnsServerIp, char *query, 
+		              char *type):
+        Extrage datele dintr-un pachet si le afiseaza in fisierul de log. 
+        Se aplica decomprimarea acolo unde este cazul. Se afiseaza doar 
+        segventele care au date.
+      
+      int resolveDNS(FILE *logFile, char *dnsServerIp, TDNSQuery *dnsQuery, 
+		                char *query, char *type, char *payload, 
+                    unsigned short size):
+        Se incearca realizarea conexiunii, trimiterea payload-ului si 
+        asteptarea unui raspuns din partea serverului. In cazul in care 
+        se esueaza o operatie, se returneaza 0, indicand cautarea in 
+        continuare a unui nou server DNS.
+      
+      int tryDnsServers(TDNSQuery *dnsQuery, char *query, char *type):
+        Incearca toate serverele DNS sin dns_servers.conf pana cand unul 
+        dintre ele raspunde la cereri. De asemenea se afiseaza in fisierul
+        message.log pachetul care se incearca sa se transmita, o singura data.
+      
+      int main(int argc, char **argv):
+        Punctul de inceput al programului. Se verifica argumentele si se 
+        incearca serverele DNS pentru raspuns.
+
+    Functinalitatea resolverului DNS:
+      Se ruleaza programul cu paramterii corespunzatori. Se testeaza daca 
+      acestia pot fi prelucrati de un server DNS. Daca da, se creeaza un request
+      si pentru fiecare adresa de DNS din fisier, se incearca trimiterea 
+      acestuia. In cazul in care serverul nu raspunde sau se da timeout, se 
+      incearca un alt server din fisier. Daca nu mai exista servere de testat,
+      se incheie executia programului, fara raspuns. In cazul in care serverul
+      raspunde cu un mesaje, se verifica tipul mesajului si se extrag datele 
+      din el. Apoi sunt afisate in fisierul de log.
+    
+    Un exemplu de log se poate vedea in dns_preview.log, atasat proiectului.
+
+    Nota: Programul apendeaza noul text catre un fisier deja existent. Pentru 
+          usurinta vizualizarii se recomanda stergerea fisierelor de log inainte
+          de rulare.
+    
+    Nota: Exemplu de apel folosind make run:
+      $ make run ARGS="google.com NS"
+    
+

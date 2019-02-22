@@ -1,0 +1,134 @@
+; 216.239.32.10 - google.com A
+
+;; ANSWER SECTION:
+google.com. IN A 216.58.214.206
+
+
+; 216.239.32.10 - google.com NS
+
+;; ANSWER SECTION:
+google.com. IN NS ns2.google.com.
+google.com. IN NS ns3.google.com.
+google.com. IN NS ns4.google.com.
+google.com. IN NS ns1.google.com.
+
+;; ADDITIONAL SECTION:
+ns2.google.com. IN A 216.239.34.10
+ns2.google.com. IN AAAA 2001:4860:4802:0034:0000:0000
+ns3.google.com. IN A 216.239.36.10
+ns3.google.com. IN AAAA 2001:4860:4802:0036:0000:0000
+ns4.google.com. IN A 216.239.38.10
+ns4.google.com. IN AAAA 2001:4860:4802:0038:0000:0000
+ns1.google.com. IN A 216.239.32.10
+ns1.google.com. IN AAAA 2001:4860:4802:0032:0000:0000
+
+
+; 216.239.32.10 - google.com MX
+
+;; ANSWER SECTION:
+google.com. IN MX 10 aspmx.l.google.com.
+google.com. IN MX 50 alt4.aspmx.l.google.com.
+google.com. IN MX 30 alt2.aspmx.l.google.com.
+google.com. IN MX 20 alt1.aspmx.l.google.com.
+google.com. IN MX 40 alt3.aspmx.l.google.com.
+
+;; ADDITIONAL SECTION:
+aspmx.l.google.com. IN A 66.102.1.26
+aspmx.l.google.com. IN AAAA 2a00:1450:400c:0c09:0000:0000
+alt4.aspmx.l.google.com. IN A 74.125.199.26
+alt4.aspmx.l.google.com. IN AAAA 2607:f8b0:400e:0c02:0000:0000
+alt2.aspmx.l.google.com. IN A 74.125.200.26
+alt2.aspmx.l.google.com. IN AAAA 2404:6800:4003:0c00:0000:0000
+alt1.aspmx.l.google.com. IN A 108.177.14.26
+alt1.aspmx.l.google.com. IN AAAA 2a00:1450:4010:0c0f:0000:0000
+alt3.aspmx.l.google.com. IN A 74.125.204.26
+alt3.aspmx.l.google.com. IN AAAA 2404:6800:4008:0c04:0000:0000
+
+
+; 216.239.32.10 - google.com TXT
+
+;; ANSWER SECTION:
+google.com. IN TXT "docusign=05958488-4752-4ef2-95eb-aa7ba8a3bd0e"
+google.com. IN TXT "v=spf1 include:_spf.google.com ~all"
+google.com. IN TXT "facebook-domain-verification=22rm551cu4k0ab0bxsw536tlds4h95"
+
+
+; 216.239.32.10 - google.com SOA
+
+;; ANSWER SECTION:
+google.com. IN SOA ns1.google.com. dns.admin.google.com. 197298057 900 900 1800 60
+
+;; AUTHORITY SECTION:
+google.com. IN NS ns3.google.com.
+google.com. IN NS ns2.google.com.
+google.com. IN NS ns4.google.com.
+google.com. IN NS ns1.google.com.
+
+;; ADDITIONAL SECTION:
+ns3.google.com. IN A 216.239.36.10
+ns3.google.com. IN AAAA 2001:4860:4802:0036:0000:0000
+ns2.google.com. IN A 216.239.34.10
+ns2.google.com. IN AAAA 2001:4860:4802:0034:0000:0000
+ns4.google.com. IN A 216.239.38.10
+ns4.google.com. IN AAAA 2001:4860:4802:0038:0000:0000
+ns1.google.com. IN A 216.239.32.10
+ns1.google.com. IN AAAA 2001:4860:4802:0032:0000:0000
+
+
+; 216.239.32.10 - google.com CNAME
+
+;; AUTHORITY SECTION:
+google.com. IN SOA ns1.google.com. dns.admin.google.com. 197298057 900 900 1800 60
+
+
+; 216.239.32.10 - 66.102.1.26 PTR
+
+;; ANSWER SECTION:
+26.1.102.66.in.addr.arpa. IN PTR wb.in.f26.1e100.net.
+
+
+; 216.239.32.10 - google.com CNAME
+
+;; AUTHORITY SECTION:
+google.com. IN SOA ns1.google.com. dns.admin.google.com. 197298057 900 900 1800 60
+
+
+; 8.8.8.8 - google.com A
+
+;; ANSWER SECTION:
+google.com. IN A 216.58.214.206
+
+
+; 8.8.8.8 - google.com NS
+
+;; ANSWER SECTION:
+google.com. IN NS ns3.google.com.
+google.com. IN NS ns2.google.com.
+google.com. IN NS ns1.google.com.
+google.com. IN NS ns4.google.com.
+
+
+; 8.8.8.8 - google.com MX
+
+;; ANSWER SECTION:
+google.com. IN MX 20 alt1.aspmx.l.google.com.
+google.com. IN MX 50 alt4.aspmx.l.google.com.
+google.com. IN MX 30 alt2.aspmx.l.google.com.
+google.com. IN MX 40 alt3.aspmx.l.google.com.
+google.com. IN MX 10 aspmx.l.google.com.
+
+
+; 8.8.8.8 - google.com SOA
+
+;; ANSWER SECTION:
+google.com. IN SOA ns1.google.com. dns.admin.google.com. 197298057 900 900 1800 60
+
+
+; 8.8.8.8 - google.com TXT
+
+;; ANSWER SECTION:
+google.com. IN TXT "docusign=05958488-4752-4ef2-95eb-aa7ba8a3bd0e"
+google.com. IN TXT "facebook-domain-verification=22rm551cu4k0ab0bxsw536tlds4h95"
+google.com. IN TXT "v=spf1 include:_spf.google.com ~all"
+
+
